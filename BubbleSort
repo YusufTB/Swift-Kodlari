@@ -1,0 +1,22 @@
+// Bubble Sort Algoritması
+// Her geçişte en büyük eleman en sağ tarafa gelir.
+// Karmaşıklığı O(n^2) Selection, Insertion algoritmalarından performans açısından çok farkı yoktur.
+
+var myArray = [1,-3,10,7,8,4,5,1,2,-10,-11,-9]
+var temp = 0
+var flag = 1
+for _ in 0...myArray.count{
+    for j in 1..<myArray.count{
+        if myArray[j] < myArray[j - 1]{
+            flag = 0
+            temp = myArray[j - 1]
+            myArray[j - 1] = myArray[j]
+            myArray[j] = temp
+        }
+    }
+    if flag == 1{
+        break
+    }
+    flag = 1
+    print(myArray)
+}
