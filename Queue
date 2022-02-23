@@ -1,0 +1,57 @@
+// Bu yapıda iki uçtan işlem yapılabilir. Enqueue ile sona eleman eklenir.
+// Dequeue ile baştan eleman çıkartılır.
+
+import Foundation
+
+struct Queue<T>{ // Generic sınıftan bir struct oluşturduk.
+    var array = [T]()
+    
+    // Enqueue İşlemi
+    public mutating func enqueue(_ element: T){
+        array.append(element)
+    }
+    
+    // Dequeue İşlemi
+    public mutating func dequeue () -> T?{
+        if array.isEmpty{
+            return nil
+        }
+        return array.removeFirst()
+    }
+    
+    // Burası computing property olarak tanımlandı.
+    // İlk elemanı buluyoruz
+    public var front: T?{
+        return array.first
+    }
+    
+    // Son elemanı buluyoruz.
+    public var rear: T?{
+        return array.last
+    }
+    
+    public var isEmpty: Bool{
+        return array.isEmpty
+    }
+    
+    // Queue eleman sayısı
+    public var count: Int{
+        return array.count
+    }
+}
+var q = Queue<String>()
+q.enqueue("Yusuf")
+q.enqueue("Elif")
+q.enqueue("Mehmet")
+
+print(q.array)
+print(q.front)
+print(q.rear)
+print(q.count)
+
+q.dequeue()
+
+print(q.array)
+print(q.front)
+print(q.rear)
+print(q.count)
