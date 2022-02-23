@@ -1,0 +1,65 @@
+// Eleman ekleme-çıkarma işlemlerinin sadece tek noktadan(en üstten) yaptığımız veri yapısına
+// Stack diyoruz.
+// Kullanım örneği olarak web sayfalarında gezerken son giriş yaptığımız web sayfası en üstte
+// ilk giriş yaptığımız web sayfası en altta kalacak şekilde işlem yapılabilir. Böylelikle
+// geri tuşuna bastığımızda en son ilk giriş yaptığımız sayfaya geri döneriz.
+
+import Foundation
+
+struct Stack<T>{ // Generic sınıftan bir stack oluşturdum.
+    var array = [T]()
+    
+    // Stack'imize eleman ekliyoruz.
+    mutating func push(_ value: T){
+        array.append(value)
+    }
+    
+    // Stack'imizden eleman çıkartıyoruz.
+    mutating func pop() -> T?{
+        if array.isEmpty{
+            return nil
+        }
+        return array.removeLast()
+    }
+    
+    // En üstteki elemanı buluyoruz.
+    mutating func topValue() -> T?{
+        return array.last
+    }
+    
+    // En alttaki elemanı buluyoruz.
+    mutating func subValue() -> T?{
+        return array.isEmpty ? nil : array.first
+    }
+}
+
+var myArray = Stack<String>()
+myArray.push("yusuf")
+myArray.push("ahmet")
+myArray.push("huseyin")
+myArray.push("zehra")
+
+if let subValue = myArray.subValue(){
+    print("Stack'imizin en altındaki eleman : \(subValue)")
+}
+else{
+    print("Stack'imizde eleman kalmamıştır.")
+}
+
+if let topValue = myArray.topValue(){
+    print("Stack'imizin en üstündeki eleman : \(topValue)")
+}
+else{
+    print("Stack'imizde eleman kalmamıştır.")
+}
+
+print(myArray.pop())
+print(myArray.pop())
+print(myArray.pop())
+
+if let topValue = myArray.topValue(){
+    print("Stack'imizin en üstündeki eleman : \(myArray.topValue()!)")
+}
+else{
+    print("Stack'imizde eleman kalmamıştır.")
+}
