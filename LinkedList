@@ -1,0 +1,143 @@
+// Linkedlist -> ekleme ve silme açısından zaman karmaşıklığı
+// O(1) dir. erişim açısından O(n) dir.
+import UIKit
+
+// Listenin herhangi bir türü kullanabilmesi için <T> olarak tanımladık.
+public class LLNode<T>{
+    var value: T
+    var next: LLNode?
+    var previous: LLNode?
+    
+    public init(value: T){
+        self.value = value
+    }
+}
+
+// Linkedlistte herhangi bir değeri kullanabilmek için <T> kullandık.
+public class LinkedList<T>{
+    public typealias Node = LLNode<T>
+    
+    public var head: Node?
+    
+    public var first: Node?{
+        return head
+    }
+    
+    // kuyruk takibi yapılabilmesi için son düğüm kullanıldı.
+    public var last: Node?{
+        guard var node = head else {return nil} // head nil ise kuyrukta nildir.
+        while let next = node.next{ // head nil değil ise son düğüme kadar düğümümüzü ilerletiriz.
+            node = next
+        }
+        return node
+    }
+    
+    // Düğümleri saymak
+    public var count: Int{
+        guard var node = head else {return 0} // Head yoksa düğümde yoktur.
+        var count = 1
+        while let next = node.next{ // Eğer head varsa son düğüme ulaşana kadar döngümüzü tamamlarız ve sayımızı buluruz.
+            node = next
+            count += 1
+        }
+        return count
+    }
+    
+    // Listemizin içeriğini yazdıralım.
+    public var print: String{
+        var stringArray = "["
+        guard var node = head else { return stringArray + "]"}
+        while let next = node.next{
+            stringArray += "\(node.value), "
+            node = next
+        }
+        stringArray += "\(node.value)"
+        return stringArray + "]"
+    }
+    
+    // Listemizin sonuna yeni düğüm ekleyelim.
+    public func append(value: T){
+        let newNode = Node(value: value)
+        if let lastNode = last{
+            // en azından listemizde bir düğüm var
+            newNode.previous = lastNode
+            lastNode.next = newNode
+        }
+        else{
+            // listemizde düğüm yok
+            head = newNode
+        }
+    }
+    
+    // İstediğimiz bir dizinden düğüm getirelim.
+    public func node(atIndex index: Int) -> Node{
+        if index == 0 {
+            return head!
+        }
+        else{
+            var node = head?.next
+            for _ in 1 ..< index{
+                node = node?.next
+                if node == nil { break }
+            }
+            return node!
+        }
+    }
+    
+    // belirli bir indexe yeni bir düğüm ekleyelim
+    public func insert(value: T, atIndex index: Int){
+        let newNode = Node(value: value)
+        if index == 0{
+            newNode.next = head
+            head?.previous = newNode
+            head = newNode
+        }
+        else{
+            let prev = self.node(atIndex: index - 1)
+            let next =  prev.next
+            
+            newNode.previous = prev
+            newNode.next = next
+            
+            prev.next = newNode
+            next?.previous = newNode
+        }
+    }
+    
+    // Düğümün bulunduğu indexe göre (Head, ara, kuyruk) next ve previous işlemleri yapılıp listeden kaldırıldı.
+    public func remove(node: Node) -> T{
+        let prev = node.previous
+        let next = node.next
+        if let prev = prev{ // Öncesi varsa Head değildir.
+            prev.next = next
+        }
+        else{               // Head durumu
+            head = next
+        }
+        next?.previous = prev
+        node.previous = nil
+        node.next = nil
+        return node.value
+    }
+    
+    // Silinecek düğümü remove fonksiyonuna gönderiyoruz.
+    public func removeAt(_ index: Int) -> T{
+        let nodeToRemove = node(atIndex: index)
+        return remove(node: nodeToRemove)
+    }
+}
+
+let list = LinkedList<String>()
+list.first
+list.last
+list.append(value: "yusuf")
+list.append(value: "mehmet")
+print(list.count)
+list.print
+list.append(value: "zehra")
+list.print
+list.node(atIndex: 1).value
+list.insert(value: "insertthis", atIndex: 1)
+print(list.print)
+list.removeAt(3)
+print(list.print)
